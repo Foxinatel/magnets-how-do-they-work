@@ -1,9 +1,9 @@
-use bevy::prelude::*;
+use bevy::{math::vec2, prelude::*};
 use bevy_rapier2d::prelude::ExternalForce;
 
-use crate::Player;
+use crate::objects::Player;
 
-// pub mod velocity;
+const FORCE_MULT: f32 = 50000.;
 
 pub fn player_movement(
     keyboard_input: Res<Input<KeyCode>>,
@@ -16,25 +16,22 @@ pub fn player_movement(
         };
     }
 
-    // let dist = MOVEMENT_SPEED * time.delta_seconds();
-
     for (_, mut force) in &mut player {
-        let horiz = if pressed!(A) || pressed!(Left) {
-            -1000.
-        } else if pressed!(D) || pressed!(Right) {
-            1000.
-        } else {
-            0.
-        };
+        let mut newforce = vec2(0., 0.);
 
-        let vert = if pressed!(W) || pressed!(Up) {
-            1000.
-        } else if pressed!(S) || pressed!(Down) {
-            -1000.
-        } else {
-            0.
-        };
+        if pressed!(A) || pressed!(Left) {
+            newforce += vec2(-1., 0.) * time.delta_seconds() * FORCE_MULT
+        }
+        if pressed!(D) || pressed!(Right) {
+            newforce += vec2(1., 0.) * time.delta_seconds() * FORCE_MULT
+        }
+        if pressed!(W) || pressed!(Up) {
+            newforce += vec2(0., 1.) * time.delta_seconds() * FORCE_MULT
+        }
+        if pressed!(S) || pressed!(Down) {
+            newforce += vec2(0., -1.) * time.delta_seconds() * FORCE_MULT
+        }
 
-        force.force = Vec2::new(horiz, vert);
+        force.force = newforce;
     }
 }
