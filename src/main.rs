@@ -7,16 +7,20 @@ pub mod movement;
 pub mod objects;
 
 fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins)
+    let mut app = App::new();
+    app.add_plugins(DefaultPlugins)
         .add_plugin(ShapePlugin)
         .add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
-        .add_plugin(RapierDebugRenderPlugin {
+        .add_startup_system(init::init)
+        .add_system(movement::player_movement);
+
+    if cfg!(debug_assertions) {
+        app.add_plugin(RapierDebugRenderPlugin {
             depth_test: false,
             style: DebugRenderStyle { ..default() },
             mode: DebugRenderMode::default(),
-        })
-        .add_startup_system(init::init)
-        .add_system(movement::player_movement)
-        .run();
+        });
+    }
+
+    app.run();
 }

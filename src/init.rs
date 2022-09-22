@@ -1,8 +1,8 @@
 use bevy::prelude::*;
 
 pub mod magnetic;
-pub mod wall;
 pub mod player;
+pub mod wall;
 
 pub fn init(mut commands: Commands, asset_server: Res<AssetServer>) {
     // Generate 2d camera view
