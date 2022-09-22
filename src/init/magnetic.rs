@@ -23,5 +23,11 @@ pub fn create(commands: &mut Commands, size: (f32, f32), centered_at: (f32, f32)
         .insert(Magnetic {})
         .insert(RigidBody::Dynamic)
         .insert(GravityScale(0.0))
-        .insert(Collider::cuboid(size.0 / 2., size.1 / 2.));
+        .insert(ExternalForce::default())
+        .insert(Collider::cuboid(size.0 / 2., size.1 / 2.))
+        .insert(Damping {
+          linear_damping: 5.,
+          angular_damping: 1.0,
+        })
+        .insert(Dominance::group(0));
 }

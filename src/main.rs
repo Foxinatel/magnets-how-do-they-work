@@ -12,7 +12,8 @@ fn main() {
         .add_plugin(ShapePlugin)
         .add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
         .add_startup_system(init::init)
-        .add_system(movement::player_movement);
+        .add_system(movement::player::movement)
+        .add_system(movement::magnetic::movement);
 
     if cfg!(debug_assertions) {
         app.add_plugin(RapierDebugRenderPlugin {

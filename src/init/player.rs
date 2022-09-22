@@ -26,5 +26,6 @@ pub fn create(commands: &mut Commands, radius: f32, centered_at: (f32, f32)) {
         .insert(Damping {
             linear_damping: 5.,
             angular_damping: 1.0,
-        });
+        })
+        .insert(Dominance::group(1));
 }
