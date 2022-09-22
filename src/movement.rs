@@ -1,12 +1,13 @@
 use bevy::prelude::*;
+use bevy_rapier2d::prelude::ExternalForce;
 
 use crate::Player;
 
-pub mod velocity;
+// pub mod velocity;
 
 pub fn player_movement(
     keyboard_input: Res<Input<KeyCode>>,
-    mut player: Query<(&mut Player, &mut Transform)>,
+    mut player: Query<(&mut Player, &mut ExternalForce)>,
     time: Res<Time>,
 ) {
     macro_rules! pressed {
@@ -17,35 +18,23 @@ pub fn player_movement(
 
     // let dist = MOVEMENT_SPEED * time.delta_seconds();
 
-    let (mut player, mut transform) = player.single_mut();
+    for (_, mut force) in &mut player {
+        let horiz = if pressed!(A) || pressed!(Left) {
+            -1000.
+        } else if pressed!(D) || pressed!(Right) {
+            1000.
+        } else {
+            0.
+        };
 
-    let delta_accel = velocity::ACCEL * time.delta_seconds();
+        let vert = if pressed!(W) || pressed!(Up) {
+            1000.
+        } else if pressed!(S) || pressed!(Down) {
+            -1000.
+        } else {
+            0.
+        };
 
-    if pressed!(A) || pressed!(Left) {
-        player.velocity.x -= delta_accel
-        // debug!("{:?}", transform)
-    } else {
-        player.velocity.x /= 1.02
+        force.force = Vec2::new(horiz, vert);
     }
-
-    if pressed!(D) || pressed!(Right) {
-        player.velocity.x += delta_accel
-    } else {
-        player.velocity.x /= 1.02
-    }
-
-    if pressed!(W) || pressed!(Up) {
-        player.velocity.y += delta_accel
-    } else {
-        player.velocity.y /= 1.02
-    }
-
-    if pressed!(S) || pressed!(Down) {
-        player.velocity.y -= delta_accel
-    } else {
-        player.velocity.y /= 1.02
-    }
-
-    transform.translation.x += player.velocity.x;
-    transform.translation.y += player.velocity.y;
 }
