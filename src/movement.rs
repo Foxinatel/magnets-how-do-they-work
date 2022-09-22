@@ -3,7 +3,7 @@ use bevy_rapier2d::prelude::ExternalForce;
 
 use crate::objects::Player;
 
-const FORCE_MULT: f32 = 50000.;
+const FORCE_MULT: f32 = 1000000000.;
 
 pub fn player_movement(
     keyboard_input: Res<Input<KeyCode>>,

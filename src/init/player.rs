@@ -21,15 +21,10 @@ pub fn create(commands: &mut Commands, radius: f32, centered_at: (f32, f32)) {
         .insert(Player {})
         .insert(RigidBody::Dynamic)
         .insert(Collider::ball(radius))
-        .insert(ColliderMassProperties::Density(0.0))
         .insert(ExternalForce::default())
         .insert(GravityScale(0.0))
         .insert(Damping {
-            linear_damping: 0.99,
+            linear_damping: 5.,
             angular_damping: 1.0,
-        })
-        .insert(AdditionalMassProperties::MassProperties(MassProperties {
-            mass: 1.0,
-            ..default()
-        }));
+        });
 }
